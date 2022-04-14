@@ -1,6 +1,6 @@
 {
   "name": "gulp-unfetch",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "fetch() with headers and text/json responses via developit/unfetch",
   "license": "MIT",
   "repository": "https://github.com/mgerzabek/gulp-unfetch",

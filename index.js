@@ -26,14 +26,16 @@ module.exports = (options = {}) =>
       {
         file.path = replaceExtension(file.path, '.json')
 
-        const response = await fetch(options.url, {
+        fetch(options.url, {
           method: options.method,
           headers: options.headers,
           body: file.contents.toString()
+        }).then(response => {
+          file.contents = Buffer.from(JSON.stringify(response.json()))
+          return callback(null, file)
+        }).catch(error => {
+          return callback(new PluginError(PLUGIN_NAME, error))
         });
-        const data = await response.json();
-        file.contents = Buffer.from(JSON.stringify(data))
-        return callback(null, file)
       }
 
       return null

@@ -1,7 +1,7 @@
 const { Transform } = require('stream')
 const PluginError = require('plugin-error')
 const replaceExtension = require('replace-ext')
-const unfetch = require('unfetch')
+const fetch = require('unfetch')
 
 const PLUGIN_NAME = 'gulp-unfetch'
 
@@ -26,9 +26,19 @@ module.exports = (options = {}) =>
       {
         file.path = replaceExtension(file.path, '.json')
 
-        const result = {}
-
-        file.contents = Buffer.from(JSON.stringify(result))
+        fetch(options.url, {
+          method: options.method,
+          headers: options.headers,
+          body: file.contents.toString()
+        }).then(response =>
+        {
+          file.contents = Buffer.from(JSON.stringify(response))
+        })
+        .catch(error =>
+        {
+          return callback(new PluginError(PLUGIN_NAME, error))
+        })
+        
         return callback(null, file)
       }
 

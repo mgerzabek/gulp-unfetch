@@ -1,6 +1,6 @@
-# gulp-vinylson
+# gulp-unfetch
 
-fetch() your JSON request with headers and get text/json response via [developit/unfetch](https://github.com/developit/unfetch).
+fetch() your JSON request with headers and get text/json response via [node-fetch/node-fetch](https://github.com/node-fetch/node-fetch).
 
 ## Installation
 

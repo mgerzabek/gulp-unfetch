@@ -33,13 +33,12 @@ module.exports = (options = {}) =>
         }).then(response =>
         {
           file.contents = Buffer.from(JSON.stringify(response))
+          return callback(null, file)
         })
         .catch(error =>
         {
           return callback(new PluginError(PLUGIN_NAME, error))
         })
-        
-        return callback(null, file)
       }
 
       return null

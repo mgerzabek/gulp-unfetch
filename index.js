@@ -5,7 +5,7 @@ const fetch = require('node-fetch')
 
 const PLUGIN_NAME = 'gulp-unfetch'
 
-module.exports = (options = {}) =>
+module.exports = async (options = {}) =>
 {
 
   return new Transform({

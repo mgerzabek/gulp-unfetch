@@ -1,6 +1,6 @@
 const { Transform } = require('stream')
 const PluginError = require('plugin-error')
-const replaceExtension = require('replace-ext')
+const replaceExt = require('replace-ext')
 const fetch = require('node-fetch')
 
 const PLUGIN_NAME = 'gulp-unfetch'
@@ -24,7 +24,7 @@ module.exports = function unfetch (options = {})
 
       if (file.isBuffer())
       {
-        file.path = replaceExtension(file.path, options.ext)
+        file.path = replaceExt(file.path, options.ext)
 
         (async () => {
           try {

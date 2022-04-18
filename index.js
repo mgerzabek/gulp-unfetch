@@ -24,7 +24,7 @@ module.exports = (options = {}) =>
 
       if (file.isBuffer())
       {
-        file.path = replaceExtension(file.path, '.json')
+        file.path = replaceExtension(file.path, options.ext)
 
         fetch(options.url, {
           method: options.method,

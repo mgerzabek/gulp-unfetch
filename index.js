@@ -26,16 +26,18 @@ module.exports = (options = {}) =>
       {
         file.path = replaceExtension(file.path, options.ext)
 
-        fetch(options.url, {
-          method: options.method,
-          headers: options.headers,
-          body: file.contents.toString()
-        }).then(response => {
-          file.contents = Buffer.from(JSON.stringify(response.json()))
+        try {
+          const response = await fetch(options.url, {
+            method: options.method,
+            headers: options.headers,
+            body: file.contents.toString()
+          });
+          const data = await response.json();
+          file.contents = Buffer.from(JSON.stringify(data))
           return callback(null, file)
-        }).catch(error => {
+        } catch (error) {
           return callback(new PluginError(PLUGIN_NAME, error))
-        });
+        }
       }
 
       return null

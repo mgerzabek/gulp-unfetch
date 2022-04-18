@@ -5,7 +5,7 @@ const fetch = require('node-fetch')
 
 const PLUGIN_NAME = 'gulp-unfetch'
 
-module.exports = async (options = {}) =>
+module.exports = (options = {}) =>
 {
 
   return new Transform({
@@ -26,18 +26,20 @@ module.exports = async (options = {}) =>
       {
         file.path = replaceExtension(file.path, options.ext)
 
-        try {
-          const response = await fetch(options.url, {
-            method: options.method,
-            headers: options.headers,
-            body: file.contents.toString()
-          });
-          const data = await response.json();
-          file.contents = Buffer.from(JSON.stringify(data))
-          return callback(null, file)
-        } catch (error) {
-          return callback(new PluginError(PLUGIN_NAME, error))
-        }
+        (async () => {
+          try {
+            const response = await fetch(options.url, {
+              method: options.method,
+              headers: options.headers,
+              body: file.contents.toString()
+            });
+            const data = await response.json();
+            file.contents = Buffer.from(JSON.stringify(data))
+            return callback(null, file)
+          } catch (error) {
+            return callback(new PluginError(PLUGIN_NAME, error))
+          }
+        })()
       }
 
       return null

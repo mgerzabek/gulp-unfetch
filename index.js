@@ -32,9 +32,9 @@ module.exports = (options = {}) =>
           body: '[' + file.contents.toString() + ']'
         }).then(response => {
           file.contents = Buffer.from(JSON.stringify(response.text()))
-          callback(null, file)
+          return callback(null, file)
         }).catch(error => {
-          callback(new PluginError(PLUGIN_NAME, error))
+          return callback(new PluginError(PLUGIN_NAME, error))
         });
       }
 

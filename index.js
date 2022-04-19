@@ -29,7 +29,7 @@ module.exports = (options = {}) =>
         fetch(options.url, {
           method: options.method,
           headers: options.headers,
-          body: file.contents.toString()
+          body: '[' + file.contents.toString() + ']'
         }).then(response => {
           file.contents = Buffer.from(JSON.stringify(response.json()))
           callback(null, file)

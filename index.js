@@ -1,11 +1,11 @@
 const { Transform } = require('stream')
 const PluginError = require('plugin-error')
-const replaceExt = require('replace-ext')
+const replaceExtension = require('replace-ext')
 const fetch = require('node-fetch')
 
 const PLUGIN_NAME = 'gulp-unfetch'
 
-module.exports = function unfetch (options = {})
+module.exports = (options = {}) =>
 {
 
   return new Transform({
@@ -24,22 +24,18 @@ module.exports = function unfetch (options = {})
 
       if (file.isBuffer())
       {
-        file.path = replaceExt(file.path, options.ext)
+        file.path = replaceExtension(file.path, options.ext)
 
-        (async () => {
-          try {
-            const response = await fetch(options.url, {
-              method: options.method,
-              headers: options.headers,
-              body: file.contents.toString()
-            });
-            const data = await response.json();
-            file.contents = Buffer.from(JSON.stringify(data))
-            return callback(null, file)
-          } catch (error) {
-            return callback(new PluginError(PLUGIN_NAME, error))
-          }
-        })()
+        fetch(options.url, {
+          method: options.method,
+          headers: options.headers,
+          body: file.contents.toString()
+        }).then(response => {
+          file.contents = Buffer.from(JSON.stringify(response.json()))
+          callback(null, file)
+        }).catch(error => {
+          callback(new PluginError(PLUGIN_NAME, error))
+        });
       }
 
       return null

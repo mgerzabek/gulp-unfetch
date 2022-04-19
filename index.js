@@ -31,7 +31,9 @@ module.exports = (options = {}) =>
           headers: options.headers,
           body: '[' + file.contents.toString() + ']'
         }).then(response => {
-          file.contents = Buffer.from(response.text())
+          return response.text();
+        }).then(text => {
+          file.contents = Buffer.from(text)
           return callback(null, file)
         }).catch(error => {
           return callback(new PluginError(PLUGIN_NAME, error))

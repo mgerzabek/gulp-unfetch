@@ -25,12 +25,13 @@ module.exports = (options = {}) =>
       if (file.isBuffer())
       {
         file.path = replaceExtension(file.path, options.ext)
-
+        console.log('[' + file.contents.toString() + ']')
         fetch(options.url, {
           method: options.method,
           headers: options.headers,
           body: '[' + file.contents.toString() + ']'
         }).then(response => {
+          console.log(JSON.stringify(response.json()))
           file.contents = Buffer.from(JSON.stringify(response.json()))
           callback(null, file)
         }).catch(error => {

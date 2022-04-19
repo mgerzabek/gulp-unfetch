@@ -31,8 +31,9 @@ module.exports = (options = {}) =>
           headers: options.headers,
           body: '[' + file.contents.toString() + ']'
         }).then(response => {
-          console.log(JSON.stringify(response.json()))
-          file.contents = Buffer.from(JSON.stringify(response.json()))
+          str=JSON.stringify(response.json())
+          console.log(str)
+          file.contents = Buffer.from(str)
           callback(null, file)
         }).catch(error => {
           callback(new PluginError(PLUGIN_NAME, error))
